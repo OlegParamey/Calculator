@@ -36,27 +36,29 @@ npm run build:dev
 
 ## Project Structure
 
+```
 calculator/
-├── build/ # Compiled files (output by Webpack)
-│ ├── index.html
-│ └── main.js
-├── node_modules/ # Dependencies
+├── build/                  # Compiled files (output by Webpack)
+│   ├── index.html
+│   └── main.js
+├── node_modules/           # Dependencies
 ├── public/
-│ └── index.html # Template HTML file
-├── src/ # Source code
-│ ├── js/
-│ │ ├── display.js # Handles UI updates
-│ │ ├── handlers.js # Event listeners for calculator actions
-│ │ ├── operations.js # Logic for arithmetic operations
-│ │ └── utils.js # Utility functions
-│ ├── state/
-│ │ └── calculator.js # Calculator state management
-│ └── style.css # Styling for the application
-├── .gitignore # Files and directories to ignore in git
-├── package.json # Project metadata and scripts
-├── package-lock.json # Locks dependency versions
-├── README.md # Project documentation (this file)
-└── webpack.config.js # Webpack configuration
+│   └── index.html          # Template HTML file
+├── src/                    # Source code
+│   ├── js/
+│   │   ├── display.js      # Handles UI updates
+│   │   ├── handlers.js     # Event listeners for calculator actions
+│   │   ├── operations.js   # Logic for arithmetic operations
+│   │   └── utils.js        # Utility functions
+│   ├── state/
+│   │   └── calculator.js   # Calculator state management
+│   └── style.css           # Styling for the application
+├── .gitignore              # Files and directories to ignore in git
+├── package.json            # Project metadata and scripts
+├── package-lock.json       # Locks dependency versions
+├── README.md               # Project documentation (this file)
+└── webpack.config.js       # Webpack configuration
+```
 
 ## Technologies Used
 
