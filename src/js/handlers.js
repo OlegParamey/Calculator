@@ -93,16 +93,11 @@ export function handleSpecial(value) {
             updateDisplay('0')
             break
 
-        case '+/-':
+        case '+/-': // Инвертируем знак текущего числа
             if (!state.hasError && state.currentInput) {
-                state.currentInput = formatNumber(state.currentInput)
-
-                // Переключаем знак операции
-                if (state.operation === '-') {
-                    state.operation = '+'
-                } else {
-                    state.operation = '-'
-                }
+                state.currentInput = (
+                    parseFloat(state.currentInput) * -1
+                ).toString()
 
                 updateDisplay(
                     `${state.previousInput} ${state.operation} ${state.currentInput}`,
