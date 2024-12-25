@@ -1,5 +1,5 @@
 export const state = {
-    currentInput: '',
+    currentInput: '0',
     previousInput: '',
     operation: '',
     hasError: false, // Флаг для отслеживания состояния ошибки

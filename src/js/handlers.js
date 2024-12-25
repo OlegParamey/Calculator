@@ -5,9 +5,10 @@ import { formatNumber } from './utils.js'
 
 export function handleNumber(value) {
     if (state.hasError) return // Блокировка ввода при ошибке
+    if (state.currentInput.length >= 12) return
 
-    // Обработка запятой
-    if (value === ',') {
+    // Обработка точки
+    if (value === '.') {
         if (!state.currentInput) state.currentInput = '0'
         if (state.currentInput.includes('.')) return
         state.currentInput += '.'
@@ -23,54 +24,60 @@ export function handleNumber(value) {
     )
 }
 
+function handleError(result) {
+    if (result === 'Error') {
+        state.hasError = true
+        updateDisplay('Error', state.hasError)
+        return true
+    }
+    return false
+}
+
 export function handleOperator(value) {
     if (state.hasError) return // Блокируем операции при ошибке
     if (!state.currentInput && !state.previousInput) return // Блокируем операции при начальном состоянии дисплея
 
     if (value === '=') {
-        if (state.previousInput && state.currentInput && state.operation) {
-            state.currentInput = formatNumber(state.currentInput)
+        if (
+            state.previousInput !== '' &&
+            state.currentInput !== '' &&
+            state.operation
+        ) {
             state.currentInput = calculate(
                 parseFloat(state.previousInput),
                 parseFloat(state.currentInput),
                 state.operation
             )
 
-            if (state.currentInput === 'Error') {
-                // Проверяем на ошибку после вычисления
-                state.hasError = true
-                updateDisplay('Error', state.hasError)
-                return
-            }
+            if (handleError(state.currentInput)) return
 
             state.previousInput = ''
             state.operation = ''
         }
     } else {
-        if (state.currentInput && state.previousInput && state.operation) {
-            state.currentInput = formatNumber(state.currentInput)
+        if (
+            state.currentInput !== '' &&
+            state.previousInput !== '' &&
+            state.operation
+        ) {
             state.previousInput = calculate(
                 parseFloat(state.previousInput),
                 parseFloat(state.currentInput),
                 state.operation
             )
 
-            if (state.previousInput === 'Error') {
-                // Проверяем на ошибку после вычисления
-                state.hasError = true
-                updateDisplay('Error', state.hasError)
-                return
-            }
-        } else if (state.currentInput) {
-            state.previousInput = formatNumber(state.currentInput)
+            if (handleError(state.previousInput)) return
+        } else if (state.currentInput !== '') {
+            state.previousInput = state.currentInput
         }
+
         state.operation = value
         state.currentInput = ''
     }
 
     updateDisplay(
         state.operation === ''
-            ? state.currentInput
+            ? state.currentInput || '0'
             : `${state.previousInput} ${state.operation} ${state.currentInput}`,
         state.hasError
     )
@@ -78,8 +85,8 @@ export function handleOperator(value) {
 
 export function handleSpecial(value) {
     switch (value) {
-        case 'AC': // Сбрасываем флаг ошибки и очищаем все значения
-            state.currentInput = ''
+        case 'AC': // Сбрасываем флаг ошибки и возвращаемся к начальному состоянию
+            state.currentInput = '0'
             state.previousInput = ''
             state.operation = ''
             state.hasError = false
@@ -89,9 +96,14 @@ export function handleSpecial(value) {
         case '+/-':
             if (!state.hasError && state.currentInput) {
                 state.currentInput = formatNumber(state.currentInput)
-                state.currentInput = (-parseFloat(
-                    state.currentInput
-                )).toString()
+
+                // Переключаем знак операции
+                if (state.operation === '-') {
+                    state.operation = '+'
+                } else {
+                    state.operation = '-'
+                }
+
                 updateDisplay(
                     `${state.previousInput} ${state.operation} ${state.currentInput}`,
                     state.hasError
