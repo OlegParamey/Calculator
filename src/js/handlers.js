@@ -5,7 +5,7 @@ import { formatNumber } from './utils.js'
 
 export function handleNumber(value) {
     if (state.hasError) return // Блокировка ввода при ошибке
-    if (state.currentInput.length >= 12) return
+    if (state.currentInput.length >= 15) return
 
     // Обработка точки
     if (value === '.') {
