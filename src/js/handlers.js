@@ -27,96 +27,118 @@ export function handleNumber(value) {
 function handleError(result) {
     if (result === 'Error') {
         state.hasError = true
+        state.currentInput = ''
+        state.previousInput = ''
+        state.operation = ''
         updateDisplay('Error', state.hasError)
         return true
     }
     return false
 }
 
+function handleEqual() {
+    if (
+        state.previousInput !== '' &&
+        state.currentInput !== '' &&
+        state.operation
+    ) {
+        state.currentInput = calculate(
+            parseFloat(state.previousInput),
+            parseFloat(state.currentInput),
+            state.operation
+        )
+
+        if (handleError(state.currentInput)) return
+
+        state.previousInput = ''
+        state.operation = ''
+    }
+}
+
+function handleOtherOperator(value) {
+    if (
+        state.currentInput !== '' &&
+        state.previousInput !== '' &&
+        state.operation
+    ) {
+        state.previousInput = calculate(
+            parseFloat(state.previousInput),
+            parseFloat(state.currentInput),
+            state.operation
+        )
+
+        if (handleError(state.previousInput)) return
+    } else if (state.currentInput !== '') {
+        state.previousInput = state.currentInput
+    }
+
+    state.operation = value
+    state.currentInput = ''
+}
+
 export function handleOperator(value) {
-    if (state.hasError) return // Блокируем операции при ошибке
-    if (!state.currentInput && !state.previousInput) return // Блокируем операции при начальном состоянии дисплея
+    if (state.hasError) return
+    if (!state.currentInput && !state.previousInput) return
 
     if (value === '=') {
-        if (
-            state.previousInput !== '' &&
-            state.currentInput !== '' &&
-            state.operation
-        ) {
-            state.currentInput = calculate(
-                parseFloat(state.previousInput),
-                parseFloat(state.currentInput),
-                state.operation
-            )
-
-            if (handleError(state.currentInput)) return
-
-            state.previousInput = ''
-            state.operation = ''
-        }
+        handleEqual()
     } else {
-        if (
-            state.currentInput !== '' &&
-            state.previousInput !== '' &&
-            state.operation
-        ) {
-            state.previousInput = calculate(
-                parseFloat(state.previousInput),
-                parseFloat(state.currentInput),
-                state.operation
-            )
-
-            if (handleError(state.previousInput)) return
-        } else if (state.currentInput !== '') {
-            state.previousInput = state.currentInput
-        }
-
-        state.operation = value
-        state.currentInput = ''
+        handleOtherOperator(value)
     }
 
     updateDisplay(
-        state.operation === ''
+        state.hasError
+            ? 'Error'
+            : state.operation === ''
             ? state.currentInput || '0'
             : `${state.previousInput} ${state.operation} ${state.currentInput}`,
         state.hasError
     )
 }
 
+function handleClear() {
+    state.currentInput = '0'
+    state.previousInput = ''
+    state.operation = ''
+    state.hasError = false
+    updateDisplay('0')
+}
+
+function handleInvertSign() {
+    if (!state.hasError && state.currentInput) {
+        state.currentInput = (parseFloat(state.currentInput) * -1).toString()
+
+        updateDisplay(
+            `${state.previousInput} ${state.operation} ${state.currentInput}`,
+            state.hasError
+        )
+    }
+}
+
+function handlePercentage() {
+    if (!state.hasError && state.currentInput) {
+        state.currentInput = formatNumber(state.currentInput)
+        state.currentInput = (parseFloat(state.currentInput) / 100).toString()
+
+        updateDisplay(
+            `${state.previousInput} ${state.operation} ${state.currentInput}`,
+            state.hasError
+        )
+    }
+}
+
 export function handleSpecial(value) {
     switch (value) {
-        case 'AC': // Сбрасываем флаг ошибки и возвращаемся к начальному состоянию
-            state.currentInput = '0'
-            state.previousInput = ''
-            state.operation = ''
-            state.hasError = false
-            updateDisplay('0')
+        case 'AC':
+            handleClear()
             break
 
-        case '+/-': // Инвертируем знак текущего числа
-            if (!state.hasError && state.currentInput) {
-                state.currentInput = (
-                    parseFloat(state.currentInput) * -1
-                ).toString()
-
-                updateDisplay(
-                    `${state.previousInput} ${state.operation} ${state.currentInput}`,
-                    state.hasError
-                )
-            }
+        case '+/-':
+            handleInvertSign()
             break
 
         case '%':
-            if (!state.hasError && state.currentInput) {
-                state.currentInput = formatNumber(state.currentInput)
-                state.currentInput = (
-                    parseFloat(state.currentInput) / 100
-                ).toString()
-                updateDisplay(
-                    `${state.previousInput} ${state.operation} ${state.currentInput}`,
-                    state.hasError
-                )
-            }
+            handlePercentage()
             break
     }
 }

@@ -1,24 +1,32 @@
 import { handleNumber, handleOperator, handleSpecial } from './js/handlers.js'
 import './style.css'
 
-const buttons = document.querySelectorAll('.button')
+const buttons = document.querySelector('.buttons')
 
-let root = document.querySelector(':root')
 let toggle = document.querySelector('.toggle')
+let root = document.documentElement
 
-buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-        const value = button.textContent
+buttons.addEventListener('click', (event) => {
+    const button = event.target
 
-        if (button.classList.contains('secondary-accent')) handleSpecial(value)
-        else if (button.classList.contains('accent')) handleOperator(value)
-        else handleNumber(value)
-    })
+    if (!button.classList.contains('button')) return // Проверяем, что клик был по кнопке
+
+    const value = button.textContent
+
+    if (button.classList.contains('secondary-accent')) {
+        handleSpecial(value)
+    } else if (button.classList.contains('accent')) {
+        handleOperator(value)
+    } else {
+        handleNumber(value)
+    }
 })
 
 toggle.addEventListener('click', () => {
-    root.classList.toggle('light')
-    if (toggle.textContent === 'Switch to Light Theme')
-        toggle.textContent = 'Switch to Dark Theme'
-    else toggle.textContent = 'Switch to Light Theme'
+    const isLightTheme = root.getAttribute('data-theme') === 'light'
+    root.setAttribute('data-theme', isLightTheme ? 'dark' : 'light')
+
+    toggle.textContent = isLightTheme
+        ? 'Switch to Light Theme'
+        : 'Switch to Dark Theme'
 })

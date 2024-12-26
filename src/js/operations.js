@@ -1,4 +1,8 @@
 export function calculate(num1, num2, operation) {
+    if (operation === '÷' && num2 === 0) {
+        return 'Error' // Сразу проверяем деление на ноль
+    }
+
     const calculations = {
         '+': (a, b) => a + b,
         '-': (a, b) => a - b,
@@ -8,8 +12,5 @@ export function calculate(num1, num2, operation) {
 
     const result = calculations[operation]?.(num1, num2)
 
-    if (result === null) {
-        return 'Error' // Фиксируем ошибку деления на ноль
-    }
     return parseFloat(result.toFixed(10)).toString()
 }
