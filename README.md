@@ -34,7 +34,7 @@ Configures Husky to manage Git hooks. This script is automatically run after ins
 ```
 npm run prepare
 ```
-# Also you need to add to .husky/pre-commit and .husky/pre-push `npm run precommit` and `npm run prepush` respectively
+### Also you need to add to .husky/pre-commit and .husky/pre-push `npm run precommit` and `npm run prepush` respectively
 
 ## Precommit
 
