@@ -11,9 +11,9 @@ https://docs.google.com/document/d/1zpXXeSae-BlcxPKgw3DhxZA92cspVailrPYoaXSYrW8/
 ### Development
 
 Run the development server:
-
+```
 npm start
-
+```
 This will start a local server at `http://localhost:3000` and enable hot reloading.
 
 ### Building for Production
@@ -89,4 +89,5 @@ calculator/
 
 - HTML, CSS, and JavaScript
 - Webpack
+- Husky, ESlint, Prettier
 - Node.js
