@@ -3,4 +3,4 @@ export const state = {
     previousInput: '',
     operation: '',
     hasError: false, // Флаг для отслеживания состояния ошибки
-}
+};

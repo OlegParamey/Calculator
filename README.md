@@ -30,9 +30,9 @@ npm run build:dev
 
 ## Features
 
--   Basic arithmetic operations: addition, subtraction, multiplication, and division.
--   Clear (AC) and percentage (%) functionality.
--   Toggle between light and dark themes.
+- Basic arithmetic operations: addition, subtraction, multiplication, and division.
+- Clear (AC) and percentage (%) functionality.
+- Toggle between light and dark themes.
 
 ## Project Structure
 
@@ -62,6 +62,6 @@ calculator/
 
 ## Technologies Used
 
--   HTML, CSS, and JavaScript
--   Webpack
--   Node.js
+- HTML, CSS, and JavaScript
+- Webpack
+- Node.js

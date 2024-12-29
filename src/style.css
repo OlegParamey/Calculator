@@ -22,11 +22,7 @@
     --button-text-color: #000000;
     --display-text-color: #000000;
     --text-color: #000000;
-    --bg-gradient: radial-gradient(
-        circle,
-        rgba(218, 238, 174, 1) 29%,
-        rgba(148, 187, 233, 1) 100%
-    );
+    --bg-gradient: radial-gradient(circle, rgba(218, 238, 174, 1) 29%, rgba(148, 187, 233, 1) 100%);
     color-scheme: light;
 }
 
