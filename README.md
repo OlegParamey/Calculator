@@ -19,14 +19,39 @@ This will start a local server at `http://localhost:3000` and enable hot reloadi
 ### Building for Production
 
 To build the application for production:
-
+```
 npm run build:prod
-
+```
 ### Building for Development
 
 To build the application for development:
-
+```
 npm run build:dev
+```
+## Husky
+
+Configures Husky to manage Git hooks. This script is automatically run after installing dependencies to ensure Husky is set up.
+```
+npm run prepare
+```
+# Also you need to add to .husky/pre-commit and .husky/pre-push `npm run precommit` and `npm run prepush` respectively
+
+## Precommit
+
+Runs lint-staged to automatically lint and format staged files before committing them. Ensures that only properly formatted and linted code is committed.
+```
+npm run precommit
+```
+Automatically executed during git commit.
+
+## Prepush 
+
+Runs ESLint on the entire project before pushing changes to the remote repository. This ensures there are no critical linting errors in the code.
+
+```
+npm run prepush
+```
+Automatically executed during git push.
 
 ## Features
 
